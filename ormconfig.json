@@ -2,9 +2,9 @@
     "type": "mysql",
     "host": "localhost",
     "port": 3306,
-    "username": "",
-    "password": "",
-    "database": "",
+    "username": "root",
+    "password": "teste",
+    "database": "acoes",
     "entities": [
         "./src/Entities/*.ts"
     ],
