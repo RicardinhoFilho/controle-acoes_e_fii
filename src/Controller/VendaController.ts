@@ -36,8 +36,8 @@ export class VendaController {
 
   async get(req: Request, res: Response) {
     try {
-      const lote_id = Number(req.params.lote_id);
-      const data = await get(lote_id);
+      const user_id = req.userId;
+      const data = await get(user_id);
       return res.status(200).json(data);
     } catch (error) {
       return res.status(400).json(error);

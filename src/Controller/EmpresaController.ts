@@ -7,8 +7,9 @@ export class EmpresaController {
   async create(req: Request, res: Response) {
     try {
       const params: ICreateEmpresa = req.body;
+      console.log(params)
       const data = await create(params);
-
+    
       return res.status(201).json(data);
     } catch (error) {
       return res.status(400).json(error);

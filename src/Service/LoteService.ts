@@ -1,4 +1,4 @@
-import { getCustomRepository, getRepository, Repository } from "typeorm";
+import { getCustomRepository, getManager, getRepository, Repository } from "typeorm";
 import { LoteRepository } from "../Repositories/LoteRepository";
 import { LoteEntity } from "../Entities/LoteEntity";
 import { ICreateLote } from "../Interfaces/LoteInterface/ICreateLote";
@@ -28,12 +28,12 @@ export class LoteService {
   }
 
   async getAll(usuario_id: number) {
-    const repository = getCustomRepository(LoteRepository);
+  
+    const  manager = getManager(); 
     try {
-      const model = await repository.find({
-        where: { usuario_id},
-        order: { id: 1 },
-      });
+      
+      const model = await manager.query(`select lote.id as id,lote.EMPRESA_ID as empresa_id , IFNULL( lote.quantidade-(select SUM(quantidade) from venda where lote_id = lote.id),lote.quantidade) as quantidade , 
+      lote.VALOR_UNIDADE, empresa.sigla from lote inner join empresa on empresa.id = lote.empresa_id where usuario_id = ${usuario_id};`);
       return model;
     } catch (error) {
         console.log(error)

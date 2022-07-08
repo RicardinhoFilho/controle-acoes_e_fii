@@ -1,4 +1,4 @@
-import { getCustomRepository, getRepository, Repository } from "typeorm";
+import { getCustomRepository, getRepository, Repository ,getManager } from "typeorm";
 import { EmpresaRepository } from "../Repositories/EmpresaRepository";
 import { EmpresaEntity } from "../Entities/EmpresaEntity";
 import { ICreateEmpresa } from "../Interfaces/EmpresaInterfaces/ICreateEmpresa";
@@ -24,8 +24,11 @@ export class EmpresaService {
 
   async getAll() {
     const repository = getCustomRepository(EmpresaRepository);
+    const  manager = getManager(); 
     try {
-      const model = await repository.find({ order: { nome: 1 } });
+      
+      const model = await manager.query(`SELECT EMPRESA.ID,SEGMENTO.ID as SEGMENTO_ID,EMPRESA.SIGLA, EMPRESA.NOME, EMPRESA.FII, SEGMENTO.SEGMENTO, SEGMENTO.DESCRICAO  FROM EMPRESA INNER JOIN SEGMENTO ON SEGMENTO.ID = EMPRESA.SEGMENTO_ID`);
+      //
       return model;
     } catch (error) {
       throw "Usuário não encontrado!";
@@ -36,6 +39,7 @@ export class EmpresaService {
     const repository = getCustomRepository(EmpresaRepository);
     // console.log(id,email,name,password)
     try {
+      console.log({ id, fii, nome, segmento_id, sigla })
       const update = await repository
         .createQueryBuilder()
         .update(EmpresaEntity)

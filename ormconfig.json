@@ -4,7 +4,7 @@
     "port": 3306,
     "username": "root",
     "password": "teste",
-    "database": "acoes",
+    "database": "minha-carteira",
     "entities": [
         "./src/Entities/*.ts"
     ],

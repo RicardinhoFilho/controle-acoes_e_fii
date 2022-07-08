@@ -21,7 +21,7 @@ export class LOTE1656506509178 implements MigrationInterface {
           },
           {
             name: "VALOR_UNIDADE",
-            type: "DECIMAL",
+            type: "DECIMAL(18,2)",
           },
           {
             name: "EMPRESA_ID",

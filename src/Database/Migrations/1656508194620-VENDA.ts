@@ -22,7 +22,7 @@ export class VENDA1656508194620 implements MigrationInterface {
               },
               {
                 name: "VALOR_UNIDADE",
-                type: "DECIMAL",
+                type: "DECIMAL(18,2)",
               },
             ],
             foreignKeys: [

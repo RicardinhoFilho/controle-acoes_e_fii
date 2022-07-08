@@ -1,4 +1,4 @@
-import { getCustomRepository, getRepository, Repository } from "typeorm";
+import { getCustomRepository, getManager, getRepository, Repository } from "typeorm";
 import { VendaRepository } from "../Repositories/VendaRepository";
 import { VendaEntity } from "../Entities/VendaEntity";
 import { ICreateVenda } from "../Interfaces/VendaInterface/ICreateVenda";
@@ -21,13 +21,13 @@ export class VendaService {
     }
   }
 
-  async getAll(lote_id: number) {
-    const repository = getCustomRepository(VendaRepository);
+  async getAll(usuario_id: number) {
+    const manager = getManager();
     try {
-      const model = await repository.find({
-        where: { lote_id },
-        order: { id: 1 },
-      });
+      const model = await manager.query(`select venda.id as id, venda.lote_id as lote_id,venda.quantidade as quantidade, IFNULL( lote.quantidade-(select SUM(quantidade) from venda where lote_id = lote.id),lote.quantidade) 
+      as quantidade_disponivel,venda.valor_unidade as venda_valor_unidade, lote.valor_unidade as compra_valor_unidade ,
+      empresa.nome as nome_empresa, empresa.sigla as sigla
+      from venda inner join lote on lote.id = venda.lote_id inner join empresa on empresa.id = lote.empresa_id inner join usuario on usuario.id = lote.usuario_id where usuario.id =${usuario_id};`)
       return model;
     } catch (error) {
       console.log(error);
